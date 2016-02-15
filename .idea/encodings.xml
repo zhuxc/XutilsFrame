@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/zhuxc/farme/framework/fragment/TabAFragment.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/zhuxc/farme/framework/fragment/TabBFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/zhuxc/farme/framework/fragment/TabCFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/zhuxc/farme/framework/fragment/TabDFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/zhuxc/farme/framework/okhttp_volley/OkHttpStack.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/zhuxc/farme/framework/okhttp_volley/RequestManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/zhuxc/farme/framework/okhttp_volley/SelfSignSslOkHttpStack.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/tab_a.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/tab_b.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/tab_c.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/tab_d.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/raw" charset="GBK" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

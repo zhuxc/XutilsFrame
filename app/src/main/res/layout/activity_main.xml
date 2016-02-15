@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
+    android:background="#fcfcfc" >
+
+
+    <include
+        android:id="@+id/main_bottom"
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        layout="@layout/content_main" />
+
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/mian_view" />
+
+    <View
+        android:id="@+id/mian_view"
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="#EEEEEE"
+        android:layout_above="@id/main_bottom"
+        />
+</RelativeLayout>
