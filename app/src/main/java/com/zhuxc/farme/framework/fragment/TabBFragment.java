@@ -1,107 +1,145 @@
 package com.zhuxc.farme.framework.fragment;
 
-import org.json.JSONObject;
-
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.zhuxc.farme.framework.R;
-import com.zhuxc.farme.framework.utils.CommonUtil;
+import com.zhuxc.farme.framework.okhttp_volley.RequestManager;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
  * Fragment
+ *
+ * @author zhuxc
  * @ClassName: TabBFragment
  * @Description: TODO
- * @author zhuxc
- *
  */
 public class TabBFragment extends BaseFragment {
-	private TextView tv_left;
-	private TextView tv_right;
-	private TextView tv_title;
-	private View view;
-	private boolean hidden;
-	
+    @Bind(R.id.http_tv)
+    TextView httpTv;
+    private View view;
+    protected boolean isCreated = false;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.tab_b, container, false);
+        isCreated = true;
+        Log.i("fargmentB", "fargmentB onCreate");
+    }
 
-		return view;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.tab_b, container, false);
+        Log.i("fargmentB", "fargmentB onCreateView");
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                "http://www.bfbysc.com/baifenbai/index.php?act=about&op=help",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (TextUtils.isEmpty(response)) return;
+                        Log.i("fargmentA", response);
+                        httpTv.setText("请求成功:" + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
+                        if (error != null && !TextUtils.isEmpty(error.toString())) {
+                            httpTv.setText("请求失败:" + error.toString());
+                        }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
+                    }
+                });
+        RequestManager.getInstance(ct).addRequest(request, ct);
+        ButterKnife.bind(this, view);
+        return view;
+    }
 
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.i("fargmentB", "fargmentB onActivityCreated");
+    }
 
-	@Override
-	public void onStop() {
-		super.onStop();
-	}
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("fargmentB", "fargmentB onStart");
+    }
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("fargmentB", "fargmentB onResume");
+    }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-	}
+    @Override
+    public void onPause() {//建议调用此方法时取消掉网络请求
+        super.onPause();
+        Log.i("fargmentB", "fargmentB onPause");
+    }
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-	}
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		this.hidden = hidden;
-		if (!hidden) {
-			CommonUtil.Toast(ct, "fargmentB");
-		}
-	}
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i("fargmentB", "fargmentB onStop");
+        RequestManager.getInstance(ct).cancelAll(ct);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        Log.i("fargmentB", "fargmentB onDetach");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("fargmentB", "fargmentB onDestroy");
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isCreated) {
+            return;
+        }
+
+        if (isVisibleToUser) {
+            Log.i("fargmentB", "fargmentB 显示");
+        } else {
+            Log.i("fargmentB", "fargmentB 隐藏");
+        }
+    }
 
 
-	@Override
-	public void loadData() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void onClick(View arg0) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 }

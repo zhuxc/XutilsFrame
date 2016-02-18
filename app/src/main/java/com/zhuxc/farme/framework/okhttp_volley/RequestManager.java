@@ -2,9 +2,9 @@ package com.zhuxc.farme.framework.okhttp_volley;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.DiskBasedCache;
@@ -113,6 +113,9 @@ public class RequestManager {
         if (tag != null) {
             request.setTag(tag);
         }
+        request.setRetryPolicy(new DefaultRetryPolicy(50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mRequestQueue.add(request);
     }
 

@@ -1,15 +1,5 @@
 package com.zhuxc.farme.framework.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -29,20 +19,21 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.text.GetChars;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * 程序常用类，基于整个程序中使用，这里是对程序中，重复代码复用抽取
@@ -73,15 +64,22 @@ public class CommonUtil {
 //		toast.setView(view);
 //		toast.show();
 //	}
-	
+
+	private static Toast mToast = null;
+
 	/*
-	 * 自定义土司
+	 * 自定义土司    防止重复弹出
 	 */
-	public static void Toast(Context context, String string) {
-		Toast toast = Toast.makeText(context, string, Toast.LENGTH_SHORT);
-		View view = toast.getView(); 
-		toast.setView(view); 
-		toast.show(); 
+	public static void Toast(Context context, String text) {
+		if (mToast == null) {
+			mToast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+		} else {
+			mToast.setText(text);
+			mToast.setDuration(Toast.LENGTH_SHORT);
+		}
+		View view = mToast.getView();
+		mToast.setView(view);
+		mToast.show();
 	}
 
 	/**

@@ -1,12 +1,11 @@
 package com.zhuxc.farme.framework.fragment;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -14,11 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.zhuxc.farme.framework.R;
-import com.zhuxc.farme.framework.network.NetUtils;
 import com.zhuxc.farme.framework.okhttp_volley.RequestManager;
-import com.zhuxc.farme.framework.utils.CommonUtil;
-
-import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,20 +27,17 @@ import butterknife.ButterKnife;
  * @Description: TODO
  */
 public class TabAFragment extends BaseFragment {
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
     @Bind(R.id.tv)
     TextView tv;
     private View view;
-    private TextView fra_title;
-    private ImageView fra_iv_info;
-    private ImageView fra_iv_sao;
-    private boolean hidden;
-
+    protected boolean isCreated  = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("fargmentA", "fargmentA onCreate");
+
+        isCreated = true;
     }
 
     @Override
@@ -53,14 +45,6 @@ public class TabAFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.tab_a, container, false);
         ButterKnife.bind(this, view);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -68,49 +52,60 @@ public class TabAFragment extends BaseFragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        if (TextUtils.isEmpty(response))   return;
+                        Log.i("fargmentA", response);
                         tv.setText("请求成功:" + response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        tv.setText("请求失败:" + error.toString());
+
+                        if (error !=null && !TextUtils.isEmpty(error.toString())){
+                            tv.setText("请求失败:" + error.toString());
+                        }
+
                     }
                 });
         RequestManager.getInstance(ct).addRequest(request, ct);
-
+        Log.i("fargmentA", "fargmentA onCreateView");
         return view;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i("fargmentA", "fargmentA onDestroy");
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        Log.i("fargmentA", "fargmentA onActivityCreated");
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.i("fargmentA", "fargmentA onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        Log.i("fargmentA", "fargmentA onResume");
     }
 
     @Override
-    public void onPause() {
+    public void onPause() {//建议调用此方法时取消掉网络请求
         super.onPause();
+        Log.i("fargmentA", "fargmentA onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.i("fargmentA", "fargmentA onStop");
+        RequestManager.getInstance(ct).cancelAll(ct);
     }
 
     @Override
@@ -122,20 +117,23 @@ public class TabAFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
+        Log.i("fargmentA", "fargmentA onDetach");
     }
 
-    @Override
-    public void loadData() {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        this.hidden = hidden;
-        if (!hidden) {
-            CommonUtil.Toast(ct, "fargmentA");
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (!isCreated) {
+            return;
+        }
+
+        if (isVisibleToUser) {
+            Log.i("fargmentA", "fargmentA 显示");
+        }else {
+            Log.i("fargmentA", "fargmentA 隐藏");
         }
     }
 

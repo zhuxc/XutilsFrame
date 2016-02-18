@@ -40,9 +40,5 @@ public abstract class BaseFragment extends Fragment implements OnClickListener{
     public  View getRootView(){
     	return view;
     }
-    /**
-	 * 每次fragment切换都会重新调用此方法
-	 */
-	public abstract void loadData();
 
 }

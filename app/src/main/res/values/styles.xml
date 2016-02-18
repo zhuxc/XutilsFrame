@@ -1,17 +1,26 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+   <!-- <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        &lt;!&ndash; Customize your theme here. &ndash;&gt;
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
+    </style>-->
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+    <style name="AppTheme" parent="BaseAppTheme" />
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -24,7 +33,26 @@
         <item name="android:activityCloseExitAnimation">@anim/out_to_right</item>
     </style>
 
-
+    <!--
+     tabIndicatorColor   滚动条颜色
+     tabIndicatorHeight  滚动条高度
+     tabSelectedTextColor   选中颜色
+     tabTextColor  字体颜色
+     tabMode  tabGravity
+     （1）app:tabMode有两个值：fixed和scrollable。
+     （2）app:tabGravity有两个值：fill和center。
+     比较常用的是app:tabMode设置值scrollable，以及app:tabGravity设置值center。
+比如，当app:tabMode设置值scrollable表示此TabLayout中当子view超出屏幕边界时候，将提供滑动以便滑出不可见的那些子view。
+而app:tabGravity设置值center，在有些情况下，比如TabLayout中子view较少需要居中显示时候的情景。
+     -->
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">0dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">@color/tab_bgcolor</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
 
     <!-- 自定义progressDialog -->
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">

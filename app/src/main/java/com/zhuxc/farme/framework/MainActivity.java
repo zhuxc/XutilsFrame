@@ -1,46 +1,59 @@
 package com.zhuxc.farme.framework;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zhuxc.farme.framework.fragment.BaseFragment;
-import com.zhuxc.farme.framework.fragment.TabAFragment;
 import com.zhuxc.farme.framework.fragment.TabBFragment;
 import com.zhuxc.farme.framework.fragment.TabCFragment;
 import com.zhuxc.farme.framework.fragment.TabDFragment;
 import com.zhuxc.farme.framework.utils.SystemBarTintManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
+    @Bind(R.id.main_viewpager)
+    ViewPager mViewpager;
+    @Bind(R.id.main_sliding_tabs)
+    TabLayout mtabLayout;
+    @Bind(R.id.mainLayout)
+    LinearLayout mLayout;
     // 未读消息textview
     private TextView unreadLabel;
     private Button[] mTabs;
-    private TabAFragment tabAFragment;
     private TabBFragment tabBFragment;
     private TabCFragment tabCFragment;
     private TabDFragment tabDFragment;
-    private BaseFragment[] fragments;
     private int index;
-    // 当前fragment的index
-    private int currentTabIndex;
     private long exitTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         initMenuTab();
 
@@ -56,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     private void setTranslucentStatus(boolean on) {
         Window win = getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
@@ -67,70 +81,71 @@ public class MainActivity extends AppCompatActivity {
         }
         win.setAttributes(winParams);
     }
+
     /**
      * 初始化底部菜单栏
      */
-    public void initMenuTab(){
-        tabAFragment = new TabAFragment();
+    public void initMenuTab() {
+        tabDFragment = new TabDFragment();
         tabBFragment = new TabBFragment();
         tabCFragment = new TabCFragment();
-        tabDFragment = new TabDFragment();
 
-        fragments = new BaseFragment[] { tabAFragment, tabBFragment,
-                tabCFragment, tabDFragment };
-        // 添加显示第一个fragment
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, tabAFragment)
-                .add(R.id.fragment_container, tabBFragment)
-                .hide(tabBFragment).show(tabAFragment).commit();
+        SampleFragmentPagerAdapter pagerAdapter =
+                new SampleFragmentPagerAdapter(getSupportFragmentManager(), this);
+        pagerAdapter.addFragment(tabDFragment);
+        pagerAdapter.addFragment(tabBFragment);
+        pagerAdapter.addFragment(tabCFragment);
+        mViewpager.setAdapter(pagerAdapter);
 
-        mTabs = new Button[4];
-        mTabs[0] = (Button) findViewById(R.id.btn_main);
-        mTabs[1] = (Button) findViewById(R.id.btn_nearby);
-        mTabs[2] = (Button) findViewById(R.id.btn_buy);
-        mTabs[3] = (Button) findViewById(R.id.btn_mine);
+        mtabLayout.setupWithViewPager(mViewpager);
 
-        // 把第一个tab设为选中状态
-        mTabs[0].setSelected(true);
-
-
-    }
-    /**
-     * button点击事件
-     *
-     * @param view
-     */
-    public void onTabClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_main:
-                index = 0;
-                break;
-            case R.id.btn_nearby:
-                index = 1;
-                break;
-            case R.id.btn_buy:
-                index = 2;
-                break;
-            case R.id.btn_mine:
-                index = 3;
-                break;
-        }
-        if (currentTabIndex != index) {
-            FragmentTransaction trx = getSupportFragmentManager()
-                    .beginTransaction();
-            trx.hide(fragments[currentTabIndex]);
-            if (!fragments[index].isAdded()) {
-                trx.add(R.id.fragment_container, fragments[index]);
+        for (int i = 0; i < mtabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = mtabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(pagerAdapter.getTabView(i));
             }
-            trx.show(fragments[index]).commit();
         }
 
-        mTabs[currentTabIndex].setSelected(false);
-        // 把当前tab设为选中状态
-        mTabs[index].setSelected(true);
-        currentTabIndex = index;
+        mViewpager.setCurrentItem(1);
     }
 
+    public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+        private String tabTitles[] = new String[]{"TAB1","TAB2","TAB3"};
+        private Context context;
+        private final List<Fragment> mFragments = new ArrayList<>();
+
+        public View getTabView(int position) {
+            View v = LayoutInflater.from(context).inflate(R.layout.custom_tab, null);
+            TextView tv = (TextView) v.findViewById(R.id.textView);
+            tv.setText(tabTitles[position]);
+            ImageView img = (ImageView) v.findViewById(R.id.imageView);
+            //img.setImageResource(imageResId[position]);
+            return v;
+        }
+
+        public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
+        }
+
+        public void addFragment(Fragment fragment) {
+            mFragments.add(fragment);
+        }
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+    }
 
 
     @Override
@@ -148,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
