@@ -1,19 +1,13 @@
 package com.zhuxc.farme.framework.fragment;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.zhuxc.farme.framework.R;
-import com.zhuxc.farme.framework.okhttp_volley.RequestManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,28 +40,6 @@ public class TabAFragment extends BaseFragment {
         view = inflater.inflate(R.layout.tab_a, container, false);
         ButterKnife.bind(this, view);
 
-        StringRequest request = new StringRequest(
-                Request.Method.GET,
-                "https://kyfw.12306.cn/otn/",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (TextUtils.isEmpty(response))   return;
-                        Log.i("fargmentA", response);
-                        tv.setText("请求成功:" + response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        if (error !=null && !TextUtils.isEmpty(error.toString())){
-                            tv.setText("请求失败:" + error.toString());
-                        }
-
-                    }
-                });
-        RequestManager.getInstance(ct).addRequest(request, ct);
         Log.i("fargmentA", "fargmentA onCreateView");
         return view;
     }
@@ -105,7 +77,6 @@ public class TabAFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i("fargmentA", "fargmentA onStop");
-        RequestManager.getInstance(ct).cancelAll(ct);
     }
 
     @Override

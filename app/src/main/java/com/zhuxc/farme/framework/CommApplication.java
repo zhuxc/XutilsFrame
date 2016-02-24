@@ -1,19 +1,19 @@
 package com.zhuxc.farme.framework;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.Application;
-import android.app.Service;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import org.xutils.x;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -44,16 +44,6 @@ public class CommApplication extends Application {
 	private static final String TAG = "Application";
 	private static CommApplication instance = new CommApplication();;
 	
-    public static StringBuffer sb;
-    public static String add_now = null;//当前城市
-    public static String address = null;//当前城市
-    public static String lat_now = null;//纬度
-    public static String lon_now = null;//经度
-    public static String areaid = null;//当前地区id
-  //设置全局用户信息对象
-
-
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -65,7 +55,10 @@ public class CommApplication extends Application {
 		// 初始化屏幕宽度缩放比例
 		screenWidthScale = ScreenWidth / UI_Design_Width;
 		screenHeightScale = screenHight / UI_Design_Height;
-		
+
+
+		x.Ext.init(this);
+		x.Ext.setDebug(true); // 是否输出debug日志
 	}
 
 	public  static CommApplication getInstance() {
