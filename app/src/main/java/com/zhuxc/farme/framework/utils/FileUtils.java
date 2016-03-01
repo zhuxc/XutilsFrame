@@ -1,14 +1,14 @@
 package com.zhuxc.farme.framework.utils;
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Environment;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.Environment;
 /**
  * 文件工具类
  * @ClassName: FileUtils 
@@ -18,8 +18,6 @@ import android.os.Environment;
  *
  */
 public class FileUtils {
-
-//	public static String SDPATH = Environment.getExternalStorageDirectory() + "/百分百云商/";
 
 	@SuppressWarnings("unused")
 	public static String saveBitmap(Bitmap bm, String picName) {

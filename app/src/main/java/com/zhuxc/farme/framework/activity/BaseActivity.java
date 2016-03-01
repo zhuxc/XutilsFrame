@@ -11,7 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 
 import com.zhuxc.farme.framework.CommApplication;
-import com.zhuxc.farme.framework.okhttp_volley.RequestManager;
+import com.zhuxc.farme.framework.utils.AppManager;
 import com.zhuxc.farme.framework.utils.ThreadPoolManager;
 import com.zhuxc.farme.framework.view.CustomProgressDialog;
 
@@ -30,7 +30,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected Context context;
 	private CommApplication application;
 	protected ThreadPoolManager threadPoolManager;
-
+	protected AppManager appManager;
 	public BaseActivity() {
 		threadPoolManager = ThreadPoolManager.getInstance();
 	}
@@ -41,6 +41,9 @@ public abstract class BaseActivity extends FragmentActivity implements
 		application = CommApplication.getInstance();
 		application.addActvity(this);
 		context = getApplicationContext();
+
+		appManager = AppManager.getInstance();
+		appManager.addActivity(this);
 
 		// 处理报错日志--输出到指定文件夹
 //		SysCrashHandler crashHandler = SysCrashHandler.getInstance();
@@ -69,11 +72,6 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected void init() {
 	};
 
-	/**
-	 * 绑定ID
-	 */
-	protected void findViewById() {
-	};
 
 	/**
 	 * 子类用来设置监听的操作
@@ -114,7 +112,6 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 		application.removeActvity(this);
-		RequestManager.getInstance(this).cancelAll(this);//关闭页面时取消所有网络请求
 		context = null;
 		threadPoolManager = null;
 		if (progressDialog != null) {
